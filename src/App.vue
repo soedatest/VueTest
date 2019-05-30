@@ -1,28 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- divタグ表示 -->
+    <component :is="'div'"></component>
+    <!-- formタグ表示 -->
+    <component :is="'form'">
+      <component :is="'A'"></component>
+      <component 
+        :is="'Input'"
+        :name="dataName"
+        :label="dataLabel"
+        :placeholder="'入力してください'"
+        v-model="form.input"
+      />
+      入力内容：{{ form.input }}
+    </component>
+    <!-- componentの動的切り替え -->
+		<component :is="currentPage"></component>
+		<button @click="transPage('A')">A</button>
+		<button @click="transPage('B')">B</button>    
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import A from './components/A.vue'
+import B from './components/B.vue'
+import Input from './components/Input.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    A,
+    B,
+    Input
+  },
+  data() {
+    return {
+      dataName: 'simei',
+      dataLabel: '氏名',
+      form: {
+        input: '太郎',
+      },
+      currentPage: ''
+    }
+  },
+  methods: {
+    transPage : function (page) {
+      console.log(this.currentPage)
+  		this.currentPage = page;
+  	}
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
